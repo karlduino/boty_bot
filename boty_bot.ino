@@ -14,6 +14,8 @@
 #include "robot_ping.h"
 #include "robot_motors.h"
 
+float ping_distance;
+
 
 void setup(void) {
   Serial.begin(9600);
@@ -32,13 +34,13 @@ void setup(void) {
   full_stop();
 
   ping_display_setup();
-  ping_inch(pingPin, 4, true);
+  ping_distance = ping_inch(pingPin, 4, true);
 }
 
 void loop(void)
 {
   boolean add_delay, change_direction, change_speed;
-  int ping_distance, new_angle;
+  int new_angle;
   long curTime;
   
   interpretedIRkey = 0;
