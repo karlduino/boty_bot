@@ -45,7 +45,7 @@ void random_servo_angle(Servo servo)
 int scan_and_ping(Servo servo, int n_steps, int n_smooth)
 {
   int i, j, delay_amount;
-  int angles[n_steps*2+1], *left_angles, max_angle;
+  int angles[n_steps*2+1], *left_angles, max_angle=90+SERVO_CORRECTION;
   float readings[n_steps*2+1], *left_readings, max_reading, cur_reading;
   boolean left_first = false;
   
