@@ -27,12 +27,10 @@ float ping_inch(int ping_pin, int max_readings, boolean display_result)
     pinMode(ping_pin, INPUT);
     duration = pulseIn(ping_pin, HIGH);
     
-    if(duration > 0) {
-      inches = (float)duration / MS_PER_INCH;
-      break;
-    }
+    if(duration > 0) break;
   }
 
+  inches = (float)duration / MS_PER_INCH;
   if(display_result) ping_display(inches);
 
   return(inches);
@@ -41,8 +39,6 @@ float ping_inch(int ping_pin, int max_readings, boolean display_result)
 
 boolean is_close(float ping_distance, int motorspeed, int motordirection)
 {
-  ping_distance = ping_inch(pingPin, 10, true);
-
   if(ping_distance <= MIN_DISTANCE ||
      (motordirection == FORWARD &&
       ping_distance <= MIN_DISTANCE*(1.0 + ((float)motorspeed - MIN_SPEED)/
