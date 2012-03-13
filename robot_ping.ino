@@ -5,15 +5,14 @@
 /***********************************************************************/
 float ping_inch(int ping_pin, int max_readings, boolean display_result)
 {
-  int duration;
-#define MS_PER_INCH 147.492 // 2 x distance sound travels in a microsecond
+  unsigned long duration;
+  float inches=0.0;
+#define MS_PER_INCH 148.0186 // microseconds for sound to travel 2 inches
 
   lastPingTime = millis();
-  float total=0;
-  boolean done=false;
   int n_pings=0;
   
-  while(!done) {
+  while(n_pings <= max_readings) {
     n_pings++;
 
     // trigger ping
@@ -28,13 +27,15 @@ float ping_inch(int ping_pin, int max_readings, boolean display_result)
     pinMode(ping_pin, INPUT);
     duration = pulseIn(ping_pin, HIGH);
     
-    total +=  (float) duration / MS_PER_INCH;
-    if(total > 0 || n_pings >= max_readings) done=true;
+    if(duration > 0) {
+      inches = (float)duration / MS_PER_INCH;
+      break;
+    }
   }
 
-  if(display_result) ping_display(total / (float)n_pings);
+  if(display_result) ping_display(inches);
 
-  return(total / (float)n_pings);
+  return(inches);
 }
 
 
