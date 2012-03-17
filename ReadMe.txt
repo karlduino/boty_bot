@@ -20,3 +20,6 @@ Setup:
       pin 14 is the reset; pin 15 transmits ping distance
 
     - led bulb: digital pin 13
+
+licensed under GPL v3, http://www.gnu.org/copyleft/gpl.html
+
