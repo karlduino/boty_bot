@@ -1,7 +1,7 @@
 // Arduino program for my first robot
 // Karlduino
 // first written 2 March 2012
-// last modified 13 March 2012
+// last modified 26 March 2012
 
 #define DEBUG
 
@@ -75,8 +75,6 @@ void loop(void)
     Serial.println("Too close!  Stop.");
 #endif
     full_stop();
-    motordirection=RELEASE;
-    motorspeed = 0;
 
     new_angle = scan_and_ping(ping_servo, 20, 3);
     if(new_angle < 90+SERVO_CORRECTION) {
@@ -93,8 +91,6 @@ void loop(void)
     }
 
     // starting moving forward again
-    motordirection=FORWARD;
-    motorspeed=MIN_SPEED;
     set_all_speeds(motorspeed, motordirection);
     run_all_motors(motordirection);
   }
@@ -106,8 +102,6 @@ void loop(void)
 
   case MENU:
       full_stop();
-      motordirection=RELEASE;
-      motorspeed = 0;
       new_angle = scan_and_ping(ping_servo, 20, 3);
       if(new_angle < 90+SERVO_CORRECTION) {
 #ifdef DEBUG
@@ -121,8 +115,17 @@ void loop(void)
 #endif
 	spin(LEFT, TURN_TIME*(new_angle-90-SERVO_CORRECTION)/20, TURN_SPEED);
       }
-      break;
 
+      // starting moving forward again
+      if(motorspeed>0 && motordirection != RELEASE) {
+	set_all_speeds(motorspeed, motordirection);
+	run_all_motors(motordirection);
+      }
+      else {
+	motorspeed = 0; 
+	motordirection = RELEASE;
+      }
+      break;
 
   case PLAY: // actually stop
     if(motordirection != RELEASE) {
